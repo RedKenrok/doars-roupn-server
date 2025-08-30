@@ -11,6 +11,7 @@
     "start": "node ./server.js"
   },
   "dependencies": {
-    "@doars/roupn": "^0.1.1"
+    "@doars/roupn": "^0.1.1",
+    "ws": "^8.18.3"
   }
 }
