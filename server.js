@@ -12,10 +12,6 @@ import {
 
 const PORT = process.env.PORT || 10000
 
-// Function to set CORS headers
-const setCorsHeaders = (response) => {
-}
-
 // Create a server connector instance.
 const {
   handleHttpRequest,
@@ -29,14 +25,14 @@ const httpServer = createHttpServer((
   request,
   response,
 ) => {
-  // Set CORS headers for all requests
+  // Set CORS headers for all requests.
   response.setHeader('Access-Control-Allow-Origin', '*')
   response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
   response.setHeader('Access-Control-Allow-Credentials', 'true')
   response.setHeader('Access-Control-Max-Age', '86400')
 
-  // Handle preflight OPTIONS requests
+  // Handle preflight OPTIONS requests.
   if (request.method === 'OPTIONS') {
     response.writeHead(204)
     response.end()
@@ -58,25 +54,17 @@ const httpServer = createHttpServer((
 // Set up the WebSocket server.
 const socketServer = new WebSocketServer({
   noServer: true,
+  // Handle WebSocket CORS by checking origin.
+  verifyClient: () => {
+    // Allow all origins for CORS.
+    return true
+  }
 })
 httpServer.on('upgrade', (
   request,
   socket,
   head,
 ) => {
-  // Add CORS headers for WebSocket upgrade requests
-  const origin = request.headers.origin
-  if (origin) {
-    socket.write(
-      'HTTP/1.1 101 Switching Protocols\r\n' +
-      'Upgrade: websocket\r\n' +
-      'Connection: Upgrade\r\n' +
-      'Access-Control-Allow-Origin: *\r\n' +
-      'Access-Control-Allow-Credentials: true\r\n' +
-      '\r\n'
-    )
-  }
-
   // The connector handles upgrades for the /join-room endpoint.
   const handled = handleSocketUpgrade(
     request,
