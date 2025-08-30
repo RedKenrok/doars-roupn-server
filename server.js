@@ -10,7 +10,7 @@ import {
     createServerConnector,
 } from '@doars/roupn'
 
-const PORT = 10000
+const PORT = process.env.PORT || 10000
 
 // Create a server connector instance.
 const {
