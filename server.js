@@ -18,6 +18,7 @@ const {
   handleSocketUpgrade,
 } = createServerConnector({
   // Configuration options.
+  validateOrigin: () => true,
 })
 
 // Set up the HTTP server.
